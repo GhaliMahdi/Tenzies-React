@@ -10,6 +10,8 @@ function App() {
 
     const [tenzies, setTenzies] = useState(false)
 
+    const [rolls, setDiceRolls] = useState(0)
+
     useEffect(() => {
         const allHeld = dice.every(die => die.isHeld)
         const firstValue = dice[0].value
@@ -49,15 +51,20 @@ function App() {
     
 
     function rollDice(){
+
         setDice(oldDice => oldDice.map(die => {
             return die.isHeld ? 
                 die :
                 generateNewDie()
         }))
+
+        setDiceRolls(oldDiceRolls => oldDiceRolls + 1)
+        
         
         if (tenzies) {
             setDice(allNewDice())
             setTenzies(false)
+            setDiceRolls(0)
         }
     }
 
@@ -69,10 +76,10 @@ function App() {
         })) 
     }
     
-    
     return (
         <main>
             <h1 className="title">Tenzies</h1>
+            <p>You have rolled the dice : {rolls} times</p>
             <p className="instructions">Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
             <div className="dice-container">
                 {diceElements}
